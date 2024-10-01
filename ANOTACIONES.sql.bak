@@ -1,0 +1,56 @@
+MASADQ001A
+-- con wrkobj --
+MASADQ001A  *PGM      MASTERCARD 
+-- con dsppgm, enter enter 5 --
+Archivo fuente . . . . . . . . . . . . . . . . :   QMAINPGM      
+  Biblioteca . . . . . . . . . . . . . . . . . :     MASTERCARD  
+Miembro fuente . . . . . . . . . . . . . . . . :   MASADQ001A    
+
+con strpdm opc 3 ubicamos el fuente solicitado Y COPIAMOS CON 3 A LA BIBILOTECA AUXILIAR SI ES DE PRODUCCION A DESARROLO IRA A QDESA Y SI VIENE DE DESARROLLO A PRODUCCION QPROD
+F12 PARA VISUALIZAR SI ESTÁ DONDE LE ADMITIMOS
+
+CON EL COMANDO SAVRSTOBJ COMPLETAMOS LOS PARAMETROS Y ENVIAMOS DE UN AMBIENTE A OTRO.
+
+PRODUCCION-BEPSA
+TESTING-MAQTEST
+DESARROLLO-BEPSAPY
+
+STRPDM ES PARA TRABAJAR CON LAS LIBRERIAS
+
+
+STRSQL PARA TRABAJAR CON SELECT DE SQL SAMPLE
+
+LUEGO HACER LA SENTENCIA
+
+F4
+FE4
+F11
+
+
+---para ver transacciones pendientes---
+--Transacciones en linea
+--resumen
+
+Select count(*)Cantidad, sum(opimpor) Importe, opmensaj Mensaje, opcodbco Banco from gxopera.opliqui
+where opfecliq >= '20211130' and substr(opcampoa,1,6) = '703002'
+and opstat not in ('00','77','88')
+group by opmensaj, opcodbco
+order by banco desc,cantidad desc
+
+--detalle
+Select *
+from gxopera.opliqui where opfecliq >= '20211130' and substr(opcampoa,1,6) = '703002'
+and opstat not in ('00','77','88') --and opcodbco <> 64
+order by opcanrei desc
+
+--reporte
+select a.opncomer cod_comercio,b.codeno denominacion,b.corucn ruc, b.enemiso banco_pagador,c.pardescri descripcion_banco,
+count(*) cantidad_trx,sum(a.opimpor) monto_total,b.coteln telefono,b.coemail mail
+from gxopera.opliqui a
+inner join gxbdbps.comaeaf b on a.opncomer=b.cocomer
+inner join gxopera.clparf c on b.enemiso=c.parcodbco
+where opfecliq >= '20211130' and substr(opcampoa,1,6) = '703002'
+and opstat not in ('00','77','88')
+group by a.opncomer,b.codeno,b.corucn,b.coteln,b.coemail,c.pardescri,b.enemiso
+
+

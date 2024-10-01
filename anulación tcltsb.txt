@@ -1,0 +1,11 @@
+select * from gxfindta.tcltsb
+where TSBDENE like '%FLASH%' and TSBNREF='21020120100005'
+
+
+update gxfindta.tcltsb set TSBESTA='AN', TSBDEME='ANULADO', TSBMOTIVO = 'ANULACION POR PAGO MANUAL 09/02/2021'
+where TSBDENE like '%FLASH%' and TSBNREF='21020120100005'
+
+
+update gxfindta.tcltsb set TSBESTA='AN', TSBDEME='ANULADO', TSBMOTIVO = 'ANULACION POR PAGO MANUAL 09/02/2021'
+where TSBCOCO='8100696'  
+and TSBDEME LIKE '%DATOS%'
